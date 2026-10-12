@@ -1,0 +1,23 @@
+# Third-party material (copyright): datasheets and vendor land-pattern files are linked from README, not redistributed
+ref/datasheets/
+ref/waveshare-land-pattern/
+
+# KiCad local / generated
+*.lck
+*.kicad_prl
+fp-info-cache
+*-backups/
+.mcp-backups/
+*_drc_violations.json
+*.kicad_pcb.bak
+
+# Router / script scratch output
+kicad/MAIN/scripts/maze/*.json
+kicad/MAIN/scripts/maze/*.json.*
+kicad/MAIN/scripts/maze/*.ppm
+kicad/MAIN/scripts/maze/out.txt
+kicad/MAIN/scripts/maze/tried.txt
+__pycache__/
+
+# OS
+.DS_Store

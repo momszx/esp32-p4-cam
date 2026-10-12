@@ -1,0 +1,5 @@
+(version 1)
+# Small passives in dense areas cannot always get two thermal spokes from the GND pour; one is enough for rev A.
+(rule "thermal_min_spokes"
+  (condition "A.Type == 'Pad'")
+  (constraint min_resolved_spokes 1))

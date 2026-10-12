@@ -1,0 +1,30 @@
+(version 1)
+# Small passives in dense areas cannot always get two thermal spokes from the GND pour; one is enough for rev A.
+(rule "thermal_min_spokes"
+  (condition "A.Type == 'Pad'")
+  (constraint min_resolved_spokes 1))
+
+# Review 7th round: minimum copper width per power netclass (reported as warnings; necked pad
+# entries are expected to show up and must be judged one by one).
+# The 'A.Width >= 0.09mm' term is required: a matching custom track_width rule replaces the
+# board-setup minimum (0.09 mm), so without it a power track below fab capability would only be
+# a warning. Below 0.09 mm these rules do not match and the board minimum (error) applies.
+(rule "pwr_track_width_min"
+  (severity warning)
+  (condition "A.Type == 'Track' && A.NetClass == 'PWR' && A.Width >= 0.09mm")
+  (constraint track_width (min 0.4mm)))
+(rule "pwr_light_track_width_min"
+  (severity warning)
+  (condition "A.Type == 'Track' && A.NetClass == 'PWR_LIGHT' && A.Width >= 0.09mm")
+  (constraint track_width (min 0.3mm)))
+
+# MIPI CSI-2: intra-pair length match (docs 01: within a few mil); warning only.
+(rule "csi_intra_pair_skew"
+  (severity warning)
+  (condition "A.NetClass == 'CSI_DIFF' && A.inDiffPair('CSI_*')")
+  (constraint skew (max 0.1mm) (within_diff_pairs)))
+
+# Review 7th round (gnd_emc-06): keep power planes >= 1 mm inside the board edge (GND fills stay at the board default).
+(rule "pwr_zone_edge_1mm"
+  (condition "A.Type == 'Zone' && A.NetClass == 'PWR'")
+  (constraint edge_clearance (min 1.0mm)))
