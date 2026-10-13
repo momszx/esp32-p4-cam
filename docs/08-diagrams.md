@@ -1,6 +1,6 @@
 # 08 – Diagrams (Mermaid, v0.4)
 
-Date: 2026-10-09 · **v0.4 (2026-10-11): final rev A as-built – D1 TVS under U3, U5 / R1 / C1 on the front side, new C14, G4 closed, G5 pre-order gate, G5b CSI soak** – see "Diagram corrections (v0.4)" at the end · **v0.3 (2026-10-10): GPIO assignment v0.6 (SD_EN 53, SD_CD 52, CAM_3V3_EN 4, USER 33, EFUSE_FLT 29, PDM_DATA 30), MAIN 45×45 / 4 layers, as-built TPs (TP9–TP15 deleted, C6/UART0 on the J7 pad row), 2026-10-10 decisions (R23/C25 FIT, D2 DNP, R28 10k, camera control-signal ESD → rev B)** – see "Diagram corrections (v0.3)" at the end · Source: `05-architecture.md` v0.5 (authoritative), `06-floorplan.md` v0.3, `07-bom-plan.md` v0.2 · **v0.2 (R4): the issue list has been fixed, the diagrams show the corrected state of 05/06/07** (see "Diagram corrections" at the end) · The diagrams are built **exclusively** from the tables / text of 05; 06 and 07 serve only to supplement the board side (front / rear) and the pin map where 05 is silent (this is indicated by the edge label).
+Date: 2026-10-09 · **v0.4a (2026-10-13, round 10): the Rd and CC-tap nodes are marked "schematic only, not on rev A board"** – see "Diagram corrections (v0.4a)" at the end · **v0.4 (2026-10-11): final rev A as-built – D1 TVS under U3, U5 / R1 / C1 on the front side, new C14, G4 closed, G5 pre-order gate, G5b CSI soak** – see "Diagram corrections (v0.4)" at the end · **v0.3 (2026-10-10): GPIO assignment v0.6 (SD_EN 53, SD_CD 52, CAM_3V3_EN 4, USER 33, EFUSE_FLT 29, PDM_DATA 30), MAIN 45×45 / 4 layers, as-built TPs (TP9–TP15 deleted, C6/UART0 on the J7 pad row), 2026-10-10 decisions (R23/C25 FIT, D2 DNP, R28 10k, camera control-signal ESD → rev B)** – see "Diagram corrections (v0.3)" at the end · Source: `05-architecture.md` v0.5 (authoritative), `06-floorplan.md` v0.3, `07-bom-plan.md` v0.2 · **v0.2 (R4): the issue list has been fixed, the diagrams show the corrected state of 05/06/07** (see "Diagram corrections" at the end) · The diagrams are built **exclusively** from the tables / text of 05; 06 and 07 serve only to supplement the board side (front / rear) and the pin map where 05 is silent (this is indicated by the edge label).
 
 ## Legend (for all diagrams)
 
@@ -48,7 +48,7 @@ flowchart LR
     ESDC["J2 control-signal ESD<br/>CAM_IO0, SCL, SDA - rev B (07 #38)"]:::dnp
     SHRC["J1 shield: 1 MOhm || 4.7 nF<br/>(§5, 07 #53)"]
     PDN["Pull-downs: 100k GPIO 26-28, 53; 10k GPIO 4 (FIT)<br/>GPIO 32 (DNP), MAIN front (§5, K-7)"]
-    RDF["2x 5.1k Rd footprint<br/>only without CH224A (K-1)"]:::dnp
+    RDF["2x 5.1k Rd (R4/R5)<br/>only without CH224A (K-1)<br/>schematic only, not on rev A board"]:::dnp
     I2CPU["I2C pull-up SDA/SCL (MAIN)<br/>to camera I/O level (§5)"]:::dnp
 
     subgraph MOD["P4 module: Waveshare ESP32-P4-Module (E1)"]
@@ -163,7 +163,7 @@ flowchart LR
   PDI["CH224A<br/>internal Rd, DP/DM NC (§4.1)"]
   STRAP["voltage strap fixed R<br/>never floating (§4.1)"]
   PGN["PG -> GPIO 31 (P58)<br/>pull-up 3V3 + TP17 (§5, §12)"]
-  CCTAP["CC tap 100k+ series, 10 nF, 3.6 V Zener x2<br/>-> GPIO 21/22 (§4.1, §5)"]:::dnp
+  CCTAP["CC tap 100k+ series, 10 nF, 3.6 V Zener x2<br/>-> GPIO 21/22 (§4.1, §5)<br/>schematic only, not on rev A board"]:::dnp
 
   MODP["P4 module: P84 VBAT, P85/P86 ESP_3V3<br/>47 uF + 10 uF + 100 nF (E3, §4.1)"]
   CAMSW["CAM_3V3 load switch TPS22917 (TPS22918 class)<br/>EN GPIO 4 (P19), 10k pull-down R28 (§4.1, §5)"]
@@ -176,7 +176,7 @@ flowchart LR
   MICLC["FRONT: microphone LC (J5 3V3) (§4.1)"]:::g6
   ICRH["ICR H-bridge FRONT, from 3V3 only (§4.1, §4.2)"]:::dnp
   SLED["Status LED 0603 + series R<br/>MAIN rear, driven by GPIO 6 (§4.1, §5)"]
-  RDF["2x 5.1k Rd footprint<br/>only without CH224A (K-1)"]:::dnp
+  RDF["2x 5.1k Rd (R4/R5)<br/>only without CH224A (K-1)<br/>schematic only, not on rev A board"]:::dnp
   I2CPU["I2C pull-up (MAIN)<br/>to camera I/O level (§5)"]:::dnp
   SUP["Supervisor TPS3840 class<br/>-> 0R -> ESP_EN, rev B (§4.1, §5)"]:::dnp
   PU["10k pull-up: GPIO 36, C6_IO9, C6_IO8 (§5)<br/>+ ESP_EN R23 10k / C25 1 uF FIT (2026-10-10)"]
@@ -343,8 +343,8 @@ flowchart LR
     E29["GPIO 29 / P56"]
     EEN["ESP_EN / P87"]
     EVB["VBUS_SW divider 200k/54.9k + 100 nF<br/>Zener D2 DNP"]
-    ECC1["CC1 tap 100k+ + 10 nF + Zener<br/>rev A: the CC1_ADC net has no copper"]:::dnp
-    ECC2["CC2 tap 100k+ + 10 nF + Zener"]:::dnp
+    ECC1["CC1 tap 100k+ + 10 nF + Zener<br/>rev A: not on the board, CC1_ADC has no copper"]:::dnp
+    ECC2["CC2 tap 100k+ + 10 nF + Zener<br/>rev A: not on the board, CC2_ADC has no copper"]:::dnp
     EPG["CH224A PG, pull-up 3V3, TP17"]
     EIR["IR eFuse2 / switch EN<br/>100k pull-down MAIN front, DNP with the IR branch"]:::dnp
     E6["GPIO 6 / P21"]
@@ -832,3 +832,15 @@ Source: the final as-built of `05` (§0.1, §4.1, §15) and round 9 of `90-revie
 | 8. gates | G4: closed for rev A (72/72 LCSC; Q6, Q17 open); G5: pre-order gate; G5b: CSI soak test with error counters |
 
 The camera / SD / CC ESD has been rev B (dashed) on the diagrams all along – the CC clamp does not appear as a node; the rev B row of `05` §0.1 records it.
+
+### Diagram corrections (v0.4a, 2026-10-13 – round 10)
+
+Source: `05` §0.1 and round 10 of `90-review-log.md`. The CC option group (R4/R5 Rd, R35/R36, C29/C30, D21/D22) is now schematic-only and not on the rev A board; the IR branch U7/R73 stays DNP but is routed.
+
+| Diagram | Fix |
+|---|---|
+| 1. block diagram | RDF: "Rd footprint" → R4/R5, schematic only, not on the rev A board |
+| 2. power tree | RDF as above; CCTAP: schematic only, not on the rev A board |
+| 3. net map | ECC1 / ECC2: not on the board, CC1_ADC / CC2_ADC have no copper |
+
+These nodes keep the dashed red style, like the supervisor and the J2 ESD (rev B items that are not on the board either). The IR branch nodes are unchanged: they still show "DNP, footprint stays", which remains true.

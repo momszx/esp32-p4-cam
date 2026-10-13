@@ -1,12 +1,12 @@
 G04 #@! TF.GenerationSoftware,KiCad,Pcbnew,10.0.5*
-G04 #@! TF.CreationDate,2026-10-11T06:55:44+02:00*
+G04 #@! TF.CreationDate,2026-10-13T03:03:27+02:00*
 G04 #@! TF.ProjectId,ESP32-P4-CAM-MAIN,45535033-322d-4503-942d-43414d2d4d41,A*
 G04 #@! TF.SameCoordinates,Original*
 G04 #@! TF.FileFunction,Paste,Bot*
 G04 #@! TF.FilePolarity,Positive*
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 10.0.5) date 2026-10-11 06:55:44*
+G04 Created by KiCad (PCBNEW 10.0.5) date 2026-10-13 03:03:27*
 %MOMM*%
 %LPD*%
 G01*

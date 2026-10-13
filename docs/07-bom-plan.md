@@ -1,10 +1,10 @@
 # 07 – BOM plan and value-calculation sheet (v0.4 – rev A BOM closed)
 
-Date: 2026-10-09 · Status: **rev A: G4 closed (2026-10-11, §0)**; originally ~~skeleton – filled in by gate G4 (05 §0.2), BEFORE the MAIN schematic~~ (K-8) · Basis: `05-architecture.md` v0.5 (from v0.3: v0.6 as-built), `06-floorplan.md` v0.3 · v0.2 (R4): new passive-group rows (#53–#60), TP plan, status LED, J7 pin list · **v0.3 (2026-10-10, as-built + round 7 review):** R23/C25 FIT (#22a), D2 DNP (#23), R28 10k (#54), camera control ESD and SD ESD → rev B (#38, #42), J2/J5/L1 placeholder footprints, J7 / TP / J4 as-built, G4 open · **v0.4 (2026-10-11, rounds 8–9): G4 closed for rev A – final BOM in §0** (72 fitted items with LCSC numbers, C14 new, selected special parts, stock reservation, remaining owner decisions); the TBDs in §1 preserve the v0.3 state; where §0 / `BOM_jlc.csv` says otherwise, that is authoritative
-Notation: **TBD** = not yet selected / calculated · **[UNVERIFIED]** = own knowledge, not yet confirmed by a datasheet. The "class" column is **not a part selection**, only the name of the requirement; the MPN must be filled in based on the datasheet. Rev A column: **FIT** = fitted, **DNP** = footprint present, not fitted.
+Date: 2026-10-09 · Status: **rev A: G4 closed (2026-10-11, §0)**; originally ~~skeleton – filled in by gate G4 (05 §0.2), BEFORE the MAIN schematic~~ (K-8) · Basis: `05-architecture.md` v0.5 (from v0.3: v0.6 as-built), `06-floorplan.md` v0.3 · v0.2 (R4): new passive-group rows (#53–#60), TP plan, status LED, J7 pin list · **v0.3 (2026-10-10, as-built + round 7 review):** R23/C25 FIT (#22a), D2 DNP (#23), R28 10k (#54), camera control ESD and SD ESD → rev B (#38, #42), J2/J5/L1 placeholder footprints, J7 / TP / J4 as-built, G4 open · **v0.4 (2026-10-11, rounds 8–9): G4 closed for rev A – final BOM in §0** (72 fitted items with LCSC numbers, C14 new, selected special parts, stock reservation, remaining owner decisions); the TBDs in §1 preserve the v0.3 state; where §0 / `BOM_jlc.csv` says otherwise, that is authoritative · **v0.4a (2026-10-13, round 10):** the 8 CC option parts (R4 / R5 Rd, R35 / R36, C29 / C30, D21 / D22) are excluded from the rev A board and BOM (schematic only); the IR bypass R73 moved to the B side; BOM / CPL unchanged
+Notation: **TBD** = not yet selected / calculated · **[UNVERIFIED]** = own knowledge, not yet confirmed by a datasheet. The "class" column is **not a part selection**, only the name of the requirement; the MPN must be filled in based on the datasheet. Rev A column: **FIT** = fitted, **DNP** = footprint present, not fitted, **not on board** = symbol in the schematic only ("Exclude from board" / "Exclude from BOM"), no footprint on the rev A PCB.
 Rule: the schematic may not start while the rev A **FIT** rows contain a TBD (MPN, LCSC#, footprint source) or there is an uncalculated value in section 2.
 
-> **G4 status (2026-10-11, round 9): ✅ CLOSED for rev A.** All 72 fitted items have LCSC / MPN / Manufacturer fields in the schematic and on the PCB (schematic = PCB = `BOM_jlc.csv` = CPL, parity 0); U3 `attr smd`, U1 / MH1–4 / TP / JP1 / DNP excluded; the 2026-10-10 decisions (R23 + C25 FIT, D2 DNP, R28 10k) and the new C14 carried over. Open owner decisions: **Q6** (J2 contact side), **Q17** (J5 height), **U5** second source – §0.4. ~~2026-10-10, round 7: OPEN – not a single MPN / LCSC field; J2 / J5 / L1 placeholders; U3 SMD attribute missing; CPL = 70 rows~~ (historical).
+> **G4 status (2026-10-11, round 9): ✅ CLOSED for rev A.** All 72 fitted items have LCSC / MPN / Manufacturer fields in the schematic and on the PCB (schematic = PCB = `BOM_jlc.csv` = CPL, parity 0); U3 `attr smd`, U1 / MH1–4 / TP / JP1 / DNP excluded; the 2026-10-10 decisions (R23 + C25 FIT, D2 DNP, R28 10k) and the new C14 carried over. Open owner decisions: **Q6** (J2 contact side), **Q17** (J5 height), **U5** second source – §0.4. **Round 10 (2026-10-13):** R4, R5, R35, R36, C29, C30, D21, D22 are set to "Exclude from board" and "Exclude from BOM" (schematic-only rev B option, `05` §0.1) – the BOM (40 rows) and the CPL (72 rows, F 47 / B 25) are unchanged. ~~2026-10-10, round 7: OPEN – not a single MPN / LCSC field; J2 / J5 / L1 placeholders; U3 SMD attribute missing; CPL = 70 rows~~ (historical).
 
 ## 0. Rev A final BOM (G4 closed, 2026-10-11)
 
@@ -18,7 +18,7 @@ Source: `kicad/MAIN/fab/` – `BOM_jlc.csv` (40 rows, 72 references), `CPL_jlc.c
 | Extended setup fee | 24 × ~3 USD ≈ **~72 USD / order** (check JLC's current fee table when ordering) |
 | Parts cost / board | ≈ **8.8 USD** (1+ unit price, **without the U1 module**); most expensive: J2 2.21 · U3 1.28 · U4 1.15 · U2 0.45 · U6 0.40 USD |
 | PCBA | double-sided → **JLC Standard PCBA** (Economic is single-sided only) |
-| Excluded | U1 (hand soldering, sourced by the owner), TP1–TP19, JP1, MH1–4, all DNP |
+| Excluded | U1 (hand soldering, sourced by the owner), TP1–TP19, JP1, MH1–4, all DNP; **not on the rev A board at all (round 10):** R4, R5, R35, R36, C29, C30, D21, D22 (schematic only) |
 
 ### 0.2 Selected special parts
 | Ref | Part (MPN) | LCSC | Note |
@@ -66,7 +66,7 @@ Source: `kicad/MAIN/fab/` – `BOM_jlc.csv` (40 rows, 72 references), `CPL_jlc.c
 | 4 | PD sink | **CH224A** (PD3.2 sink, I2C 0x22/0x23, PG open-drain active low) – E22 | CH224A | **C42459160** | ESSOP10 | WCH datasheet v2.1 (`ref/datasheets/`) | FIT | ✅ |
 | 5 | CH224A voltage strap | fixed R for 9 V, never floating | TBD | TBD | 0603 | – | FIT | G1 (section 2 S10) |
 | 6 | PG pull-up | R to 3V3 (polarity: G1) | TBD | TBD | 0603 | – | FIT | G1 (S9) |
-| 7 | Rd ×2 | 5.1k – **only without CH224A, never both at once** | TBD | TBD | 0603 | – | **DNP** | K-1 |
+| 7 | Rd ×2 | 5.1k – **only without CH224A, never both at once** (R4 / R5) | TBD | TBD | 0603 | – | ~~DNP~~ → **not on board** (schematic only, round 10) | K-1 |
 | 8 | eFuse (main) | adjustable OVP ~10.5–11 V, reverse-blocking, auto-retry, UVLO 4.4/3.9 V, ILIM ~2 A, soft-start (TPS25947 / TPS2595x class) [UNVERIFIED] | TPS259470ARPWR | C3662799 | RPW0010A 2×2 | TI datasheet | FIT | ✅ (stock ~300 → reserve) |
 | 9 | VBUS_SW bulk | **35–50 V MLCC**, effective C after DC bias ≤47 µF in total. As-built: C5/C6 22 µF 25 V (1210), C8 10 µF 25 V – electrically adequate given the 10.87 V OVLO, but deviates from the 35–50 V rule (electrical-09) | TBD | TBD | 1210 | – | FIT | G4 |
 | 10 | VBUS→VBUS_SW bridge | 0 Ω / solder bridge, ≥2 A | TBD | TBD | 1206 | – | **DNP** | K-1 |
@@ -78,14 +78,14 @@ Source: `kicad/MAIN/fab/` – `BOM_jlc.csv` (40 rows, 72 references), `CPL_jlc.c
 | 15 | Module 3V3 bulk | **47 µF + 10 µF + 100 nF** at pads P84–P86 | TBD | TBD | 1210 / 0805 / 0402 | – | FIT | G4 |
 | 16 | CAM_3V3 load switch | **TPS22917DBV** (TPS22918 class; 1–5.5 V, 2 A, CT, QOD – KiCad library pinout: 1 VIN, 2 GND, 3 ON, 4 CT, 5 QOD, 6 VOUT); QOD → 0R (R53) → VOUT; CT = 1 nF starting value (tune in bring-up step 7) | TPS22917DBVR | C2681320 | SOT-23-6 | KiCad Power_Management | FIT | ✅ (U6) |
 | 17 | SD_3V3 load switch | **TPS22917DBV** (U8), QOD → R60 0R, CT 1 nF | TPS22917DBVR | TBD | SOT-23-6 | KiCad Power_Management | **DNP** | ✅ type |
-| 18 | IR branch 2nd eFuse | **TPS259470ARPW** (U7; 23 V, RILM 6.65k → ILIM 0.50 A (0.425–0.575), auto-retry; EN/UVLO = IR_SW_EN, OVLO → GND); shunt R72 0.1 Ω + TP8A/B; bypass R73 0R | TPS259470ARPW | TBD | RPW0010A | TI datasheet (E22) | **DNP** | ✅ type |
+| 18 | IR branch 2nd eFuse | **TPS259470ARPW** (U7; 23 V, RILM 6.65k → ILIM 0.50 A (0.425–0.575), auto-retry; EN/UVLO = IR_SW_EN, OVLO → GND); shunt R72 0.1 Ω + TP8A/B; bypass R73 0R (**round 10: B side under U7; U7 / R73 routed, fittable without wires**) | TPS259470ARPW | TBD | RPW0010A | TI datasheet (E22) | **DNP** | ✅ type |
 | 19 | IR fused 0 Ω (rev B alternative; rev A: the whole IR branch DNP) | fused 0 Ω / PTC, ~0.75 A | TBD | TBD | 1206 | – | **DNP** | K-3 |
 | 20 | IR shunt + TP8 | MAIN front side | TBD | TBD | 1206 | – | **DNP** | G6 (S8) |
 | 21 | Supervisor | TPS3840 class, **open-drain**, ~3.08 V [UNVERIFIED] | TBD | TBD | SOT-23-5 | manufacturer | **not drawn → rev B** | K-14 |
 | 22 | Supervisor → ESP_EN 0 Ω | | TBD | TBD | 0603 | – | **not drawn → rev B** | K-14 |
 | 22a | **ESP_EN RC** (R23, C25) | **10k → 3V3 + 1 µF → GND**; Q3 (the module's own EN RC) open, but without a pull-up the board does not start | 0603WAF1002T5E / CL10A105KB8NNNC | C25804 / C15849 | 0603 ×2 | – | **FIT** (2026-10-10; previously DNP) | ✅ |
 | 23 | VBUS_SW ADC divider | R12 200k / R13 54.9k (1%) + C7 100 nF → GPIO 20; **3.6 V Zener (D2, BZT52C3V6): DNP** (2026-10-10 – its leakage at the 43 kΩ node would distort the 8 V mode threshold) | TBD | TBD | 0603 / SOD-123 | – | FIT (D2: **DNP**) | G4 (S11) |
-| 24 | CC-tap ×2 | 100k + 10 nF + 3.6 V Zener → GPIO 21/22 | TBD | TBD | 0603 / SOD-323 | – | **DNP** | K-15 |
+| 24 | CC-tap ×2 | 100k + 10 nF + 3.6 V Zener → GPIO 21/22 (R35 / R36, C29 / C30, D21 / D22) | TBD | TBD | 0603 / SOD-323 | – | ~~DNP~~ → **not on board** (schematic only, round 10) | K-15 |
 | 25 | NTC + divider | ADC2 (GPIO 49), 100 nF | TBD | TBD | 0603 | – | FIT | G4 (S13) |
 | **Module / MCU** | | | | | | | | |
 | 26 | P4 module | Waveshare ESP32-P4-Module (25×25×3.3, 88 castellated pads) | ESP32-P4-Module | – | castellated | **Waveshare land pattern zip** (G2) | FIT | G2 |
@@ -146,7 +146,7 @@ Every result is **TBD** until we have the datasheet of the corresponding type in
 | S9 | PG pull-up | R_PU = (V_rail − V_OL) / I_sink; **V_rail = 3V3** (not VBUS; GPIO max 3.6 V); example 3.3 V / 10k = 0.33 mA | CH224A PG type (open-drain?) and polarity: G1 | TBD (G1) |
 | S10 | CH224A strap | R_cfg for 9 V from the datasheet table; fixed, not floating | CH224A datasheet | TBD (G1) |
 | S11 | VBUS_SW divider | Vadc = Vbus·R2/(R1+R2): 9.45 V × 54/254 = **2.01 V** ✓ (≤3.3 V); Zener leakage × R1 error | R1 = 200k, R2 = 54k | done (to be checked) |
-| S12 | CC-tap (DNP rev A) | τ = 100k × 10 nF = 1 ms; thresholds 05 4.3; ADC / Zener leakage × 100k error | 05 4.1 | rev B |
+| S12 | CC-tap (rev A: not on the board) | τ = 100k × 10 nF = 1 ms; thresholds 05 4.3; ADC / Zener leakage × 100k error | 05 4.1 | rev B |
 | S13 | NTC divider | Vadc = 3.3 V·Rntc/(Rntc + R_ref); R_ref = R25; range 25–85 °C | NTC B value (TBD) | TBD |
 | S14 | Supervisor threshold | threshold variant below 3V3 − tolerance, compared against the buck tolerance (~3.08 V [UNVERIFIED]) | buck Vout tolerance | TBD |
 | S15 | CAM_3V3 CT | see section 4 | | |
@@ -165,7 +165,7 @@ Every result is **TBD** until we have the datasheet of the corresponding type in
 | B1, A12 | GND | GND |
 | Shield (4 THT legs) | | 1 MΩ ‖ 4.7 nF → GND (BOM #53) |
 
-Notes: USB 2.0 only; **no external Rd on CC** (the CH224A contains an internal Rd [UNVERIFIED]; the 2× 5.1k footprint is DNP, only for use without CH224A); CH224A **DP/DM NC**; in 16-pin types the duplicated A/B pins may be tied together internally – per the MPN datasheet; the D± tie must be made on the board if the connector does not tie them together.
+Notes: USB 2.0 only; **no external Rd on CC** (the CH224A contains an internal Rd [UNVERIFIED]; the 2× 5.1k Rd is schematic-only in rev A – not on the board since round 10 – and only for use without CH224A); CH224A **DP/DM NC**; in 16-pin types the duplicated A/B pins may be tied together internally – per the MPN datasheet; the D± tie must be made on the board if the connector does not tie them together.
 
 ## 4. CAM_3V3 load switch – CT / slew and inrush (K-22)
 
@@ -186,4 +186,4 @@ Notes: USB 2.0 only; **no external Rd on CC** (the CH224A contains an internal R
 - [ ] Footprint source marked in every row (manufacturer / LCSC / own); silkscreen labels: "NEVER BOTH", pin 1, "no hot-plug"
 - [x] EDA tool selected: **KiCad** (05 3.1, Q26)
 - [ ] Fabrication order (round 7 → round 9): stackup **JLC04101H-3313A** by name (~~no stackup block in the board file~~ → now included in the board file and in the gbrjob: ENIG, impedance, Rev A), impedance-control requirement, **ENIG** (the 0.3 mm gap of JP1 without a solder-mask dam may get bridged with HASL), 45 × 45 mm (not the gbrjob's 45.1), revision label (silk: "rev A 2026-10"), **rails only on the top / bottom edge** (fiducials on the rail), ~~keep-out zones for panel tabs (right edge y 16–29, top edge x 10–35)~~ → **no tab on the right edge at y > 5.8 mm, nor on the top edge between x 10–35 mm** (C3 / R10 / C1 at 0.7–0.8 mm from the right edge); **only after the pre-order gate** (refill + save in the project folder, DRC without refill 0 errors, Gerber `--check-zones`; 05 §3.1)
-- [x] CPL / BOM export: U3 SMD attribute, U1 + MH1–4 + TP + JP1 excluded, DNP attributes in sync (R4/R5 DNP), U1 and the DNP footprints without paste → **CPL 72 rows (F 47 / B 25)**, `BOM_jlc.csv` 40 rows (`kicad/MAIN/fab/`)
+- [x] CPL / BOM export: U3 SMD attribute, U1 + MH1–4 + TP + JP1 excluded, DNP attributes in sync (R4/R5 DNP; since round 10 not on the board), U1 and the DNP footprints without paste → **CPL 72 rows (F 47 / B 25)**, `BOM_jlc.csv` 40 rows (`kicad/MAIN/fab/`)

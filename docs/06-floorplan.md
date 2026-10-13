@@ -377,7 +377,7 @@ Collision: J1 fits neither to the right (J5 on F) nor to the left (J3 on F) of t
 Layers: L2 continuous GND; L3 power islands (VBUS/VBUS_SW/3V3) + GND under CSI/RF/USB.
 
 ## As-built placement – MAIN v0.6 (measured from the PCB, 2026-10-10)
-Status: **final rev A (2026-10-11)** – after the fix passes of round 8, measured from the snapshot of round 9 (final review) (pcbnew; md5-identical to the `kicad/MAIN` board). **128 footprints (124 components + MH1–4), of which 38 DNP; F 81 + 4 MH, B 43; fitted (CPL) 72: F 47 / B 25.** ~~Status: after the round 7 review and the removal of the DNP stubs, before the round 8 layout fix passes; 127 footprints (123 + MH1–4), 39 DNP; F 81 + 4 MH, B 42~~ (2026-10-10). Coordinates: **KiCad frame** (origin at the top-left corner, X to the right, Y **downward**, F-side view; the B components are also in this frame) – into the product frame above: x unchanged, y₀₆ = 45 − y. The mechanical interface (outline, MH, J2, J5, J1, J4, J7, buttons, LED) in detail: `05` §3.1a.
+Status: **round 10 (2026-10-13)** – measured from the `kicad/MAIN` board with pcbnew: **120 footprints (116 components + MH1–4), of which 30 DNP; F 74 + 4 MH, B 42; fitted (CPL) 72: F 47 / B 25.** Changes in round 10: R4, R5, R35, R36, C29, C30, D21, D22 removed from the board (schematic only, "Exclude from board"); R73 moved F → B. Before that: **final rev A (2026-10-11)** – after the fix passes of round 8, measured from the snapshot of round 9 (final review) (pcbnew; md5-identical to the `kicad/MAIN` board): ~~128 footprints (124 components + MH1–4), of which 38 DNP; F 81 + 4 MH, B 43~~. ~~Status: after the round 7 review and the removal of the DNP stubs, before the round 8 layout fix passes; 127 footprints (123 + MH1–4), 39 DNP; F 81 + 4 MH, B 42~~ (2026-10-10). Coordinates: **KiCad frame** (origin at the top-left corner, X to the right, Y **downward**, F-side view; the B components are also in this frame) – into the product frame above: x unchanged, y₀₆ = 45 − y. The mechanical interface (outline, MH, J2, J5, J1, J4, J7, buttons, LED) in detail: `05` §3.1a.
 
 | Group | Refdes | Side | Location (x; y, mm) | Note |
 |---|---|---|---|---|
@@ -395,7 +395,7 @@ Status: **final rev A (2026-10-11)** – after the fix passes of round 8, measur
 | C6 / UART0 pad row | J7 (DNP) | B | (22.5; 2.0), horizontal | top edge |
 | eFuse FLT pull-up | R11 10k | B | (36.0; 15.5) | |
 | PDM CLK series R | R70 47 Ω | B | (17.0; 8.0) | below J2 |
-| CC tap Zener | D21/D22 (DNP) | B | (1.8 / 4.6; 20.0) | |
+| CC tap Zener | D21/D22 | – | ~~B (1.8 / 4.6; 20.0)~~ | **not on the rev A board (round 10)**: schematic only, rev B option |
 | Test points | TP1–TP4, TP7, TP16A/B, TP17–TP19 / TP5 / TP6 | B | group x 37.6–43.1, y 29.5–40.5 (2.75 mm grid); TP5 (12.6; 6.6); TP6 (36.3; 10.4) | `05` §12 |
 | Camera FPC | J2 | F | (22.5; 7.5), 180° | top edge, cable from the top edge |
 | CAM_3V3 switch | U6, C50–C52, R50, R53, R51/R52 (DNP), R28 | F | x 2.75–12.6, y 11.0–16.3; U6 (3.6; 13.7), C50 (2.75; 11.0), R28 (3.0; 16.3) | top-left; R28 = 10k; C50 0.25 mm to the left (MH1 courtyard) |
@@ -408,10 +408,12 @@ Status: **final rev A (2026-10-11)** – after the fix passes of round 8, measur
 | NTC | TH1, R33, C26 | F | TH1 (22.0; 29.1), R33 (23.5; 30.2), C26 (20.0; 23.0) | |
 | B2B | J5 | F | (22.5; 40.2), 90° | bottom edge, horizontal |
 | microSD (DNP) | J3, U8, C60–C63, R60–R66 | F | J3 (9.0; 25.0) left edge; U8 (10.2; 35.4); pull-ups x 19.5–22.7, y 20.1–30.0 | R27 (SD_EN 100k, FIT) **(7.3; 37.93)** 90° (round 8: MH3 courtyard) |
-| IR branch (DNP) | U7, R71–R73, C70, C71, TP8A/B | F | x 31.0–42.75, y 38.45–43.7; U7 (33.95; 39.3), R72 (42.6; 39.2), **R73 (42.75; 42.8)**, **C71 (35.25; 43.7)** | bottom-right, next to J5; R73 / C71 moved slightly (MH4) |
-| Rd / CC tap (DNP) | R4, R5, R35, R36, C29, C30 | F | **R4 (2.15; 43.9)**; R5 (12.6; 40.4), R35 (12.6; 42.1), **R36 (12.9; 43.75)**; **C29 (10.1; 41.6) −90°, C30 (9.6; 43.9)** | bottom-left; the CC1 → R4/R35 and CC1_ADC copper removed (05 §0.1); round 8: moved aside around MH3 |
+| IR branch (DNP) | U7, R71–R73, C70, C71, TP8A/B | F (R73: **B**) | x 31.0–42.6, y 38.45–43.7; U7 (33.95; 39.3), R72 (42.6; 39.2), ~~R73 (42.75; 42.8)~~ → **R73 B (35.10; 40.90), under U7 (round 10)**, **C71 (35.25; 43.7)** | bottom-right, next to J5; C71 moved slightly (MH4); **round 10: fully routed (U7.5 VBUS_SW, U7.8 GND, R73 both sides) – can be fitted later without wires (05 §0.1)** |
+| Rd / CC tap | R4, R5, R35, R36, C29, C30 | – | **not on the rev A board (round 10, 2026-10-13)**: schematic only ("Exclude from board"), together with D21/D22; ~~F: R4 (2.15; 43.9); R5 (12.6; 40.4), R35 (12.6; 42.1), R36 (12.9; 43.75); C29 (10.1; 41.6) −90°, C30 (9.6; 43.9)~~ | rev B: place next to J1 / U2 and U1 P30/P31 if wanted; a round-10 routing attempt was rejected (`90` round 10) |
 | Mounting holes | MH1–MH4 | NPTH | (5.75 / 39.25; 8.25 / 41.75) | centre (22.5; 25.0) – `05` §3.1a; stock `MountingHole_2.2mm_M2` (mask = hole, courtyard r 2.45 on F); washer: nylon on MH1/2/4, none on MH3 (`05` §3) |
 
 **Moves relative to the 2026-10-10 table (round 8, pcbnew comparison with the pre-fix board):** C4 F → **B** (43.4; 18.65 → 42.9; 16.2); **C14 new** (F, 42.675; 16.0); C3 (y 11.4 → 9.45); R10 (43.4; 15.6 → 43.8; 12.75); R9 (y 16.35 → 16.2); C1 (43.6; 24.8 → 43.8; 26.75); buck: U4, L1, C6, C8–C13, R14–R16; C20–C23 (x 12.0–19.8 / y 41.3–43.4 → under P84–P86); C50, R27; DNP: C27/C28 (y 34.5 → 34.02), C29, C30, C71, R4, R36, R73. Not moved: the `05` §3.1a interface elements (outline, MH, J1, J2, J4, J5, J7, SW1–3, D20/R30, U1, J3), U2/U3/U5/U6, the TPs. Value change: R28 100k → 10k; DNP status: R23/C25 → FIT, D2 → DNP.
+
+**Round 10 changes (2026-10-13, `90` round 10):** R73 F (42.75; 42.8) → **B (35.10; 40.90)** under U7 (still DNP); R4, R5, R35, R36, C29, C30, D21, D22 removed from the board together with 5 leftover CC2 stub tracks (schematic only). Nothing else moved; the `05` §3.1a interface is unchanged.
 
 Deviation from the v0.6 ASCII proposal above: the TP grid is not in the top-right corner but in the bottom-right quadrant (B); the RF/J4 in the bottom-left quadrant, the status LED in the upper third of the left edge; the power block (eFuse top-right, CH224A right, buck in the centre) per the 2026-10-10 rearrangement.

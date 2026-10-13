@@ -13,6 +13,7 @@ Outputs: `BOM_jlc.csv` (JLC assembly BOM), `parts.json` (per-reference data), `f
 | Part cost / board | ≈ **8.80 USD** (1+ unit price, excluding the U1 module); the most expensive: J2 2.21 · U3 1.28 · U4 1.15 · U2 0.45 · U6 0.40 |
 | Placement side | F: 47 (with C14), **B: 25** (C4 moved to the B side; C20–C25, C40, D1, D20, J1, J4, R11, R20–R23, R30, R34, R40, R41, R70, SW1–3) → **double-sided = JLC Standard PCBA** (Economic is single-sided only) |
 | Excluded (already xb/xp on the PCB) | U1 (hand-soldered, bought by the owner), TP1–TP19, JP1, MH1–4, all DNP |
+| Not on the board (round 10, 2026-10-13) | R4, R5 (Rd fallback), R35, R36, C29, C30, D21, D22 (CC-ADC taps): schematic only, "Exclude from board" + "Exclude from BOM" (rev B option). They were DNP before, so `BOM_jlc.csv` (40 rows) and `CPL_jlc.csv` (72 rows) are unchanged |
 
 The existing values (UVLO 4.40/4.00 V, OVLO 10.87 V, ILIM 2.03 A, FB 3.328 V, SS 1.45 ms – round 7 review) are **unchanged**: for the E96 resistors, exact-value UNI-ROYAL 1 % Extended items were selected.
 
@@ -86,7 +87,7 @@ Usage: `python3 fields_apply.py <schematic directory> <board.kicad_pcb> [--parts
 
 Test on a copy of the master (`test/kicad/`):
 - 71/71 symbols and footprints received the 3 fields (213 + 213); C14 "NOT FOUND" (not yet in the master – expected).
-- `kicad-cli sch erc`: **0** (0 before as well). `drc.py`: errors **7** courtyards_overlap, unconnected **12**, parity **4 extra_footprint** (MH1–4) – **exactly the starting state**.
+- `kicad-cli sch erc`: **0** (0 before as well). `drc.py`: errors **7** courtyards_overlap, unconnected **12**, parity **4 extra_footprint** (MH1–4) – **exactly the starting state** (state of the round-8 test copy; the current board has 0 unconnected since round 10, see `ORDERING.md`).
 - Loaded in pcbnew, all 71 footprints have the 3 fields correct and hidden; a pcbnew re-save is **byte-identical** to the script's output (no format difference). `kicad-cli sch export bom` grouped by LCSC gives 39 rows, all matching `parts.json`.
 - **Important:** the KiCad 10 parity check flags mismatching fields (`footprint_symbol_field_mismatch`, confirmed by a trial) → the script must **always be run on the schematic and the PCB together**, and **after the regional changes have been merged** (the fields modify the footprint blocks, which in a uuid-based merge would conflict with other agents' moves). C14 must first be added to both the schematic and the PCB.
 

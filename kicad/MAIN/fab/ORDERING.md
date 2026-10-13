@@ -1,6 +1,6 @@
-# ESP32-P4-CAM MAIN rev A – JLC ordering guide (2026-10-11)
+# ESP32-P4-CAM MAIN rev A – JLC ordering guide (2026-10-11, updated 2026-10-13)
 
-Source: `kicad/MAIN/ESP32-P4-CAM-MAIN.kicad_pcb`. The zones are filled using the project rules. Pre-order gate: DRC **without** zone refill 0 errors, ERC 0, schematic↔board parity 0, and 12 unconnected items, all on DNP parts.
+Source: `kicad/MAIN/ESP32-P4-CAM-MAIN.kicad_pcb`. The zones are filled using the project rules. Pre-order gate: DRC **without** zone refill 0 errors, **0 unconnected items**, ERC 0, schematic↔board parity 0; the 39 `track_width` warnings are accepted (round 10, 2026-10-13).
 
 ## Files to upload
 
@@ -30,6 +30,7 @@ Source: `kicad/MAIN/ESP32-P4-CAM-MAIN.kicad_pcb`. The zones are filled using the
 
 - Double-sided SMT, 0.10 mm stencil. The U3 paste is reduced per the TI recommendation (82 / 93 %). There is no paste on U1 or on the DNP parts.
 - **U1 (Waveshare ESP32-P4-Module) is not in the BOM.** You solder it by hand after SMT. Use a fine conical tip on pins P83–P88, then inspect the gap between P87 and C23, as well as the R34/J4 solder joints.
+- **IR branch (round 10):** R73 (0 Ω IR bypass, still DNP) is now on the bottom side, under U7 at (35.10; 40.90). U7 and R73 are fully routed, so they can be fitted later without wires.
 - **J1 USB-C retention legs:** the 4 shell legs will probably not solder properly in SMT. Request hand or selective soldering from JLC, or solder them yourself before plugging in a cable for the first time.
 - **In the JLC placement preview, check** rotation and pin 1 for:
   - U2, U3, U4, U5, U6;
@@ -77,4 +78,3 @@ Source: `kicad/MAIN/ESP32-P4-CAM-MAIN.kicad_pcb`. The zones are filled using the
 - Gaps in the GND via fence along the board edge.
 - ESD protection for J2/SD/CC deferred to rev B.
 - The via drills at R14.1 and R27.2 overhang into the pad by 0.03 / 0.07 mm (same net). Measurement step 2 covers this.
-- 12 unconnected items, all on DNP parts (CC1/CC1_ADC/CC2/CC2_ADC, U7/R73). **If you ever fit these parts, route them first.**

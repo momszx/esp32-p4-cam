@@ -1,6 +1,7 @@
-# 09 – MAIN rev A PCB layers (as-built, 2026-10-12)
+# 09 – MAIN rev A PCB layers (as-built, 2026-10-13, round 10)
 
 Board: `kicad/MAIN/ESP32-P4-CAM-MAIN.kicad_pcb`, 45 × 45 mm, 4 layers, JLC04101H-3313A stackup, ENIG, 1.0 mm nominal thickness.
+Checks on this board (`kicad-cli`, no zone refill): DRC 0 errors, **0 unconnected**, schematic parity 0, 39 accepted `track_width` warnings. Since round 10 the DNP IR eFuse branch (U7, R73) is routed, and the CC option parts (R4, R5, R35, R36, C29, C30, D21, D22) are not on the board (schematic only; see [05 §0.1](05-architecture.md)).
 
 All plots are viewed **from the top (F side)**, including the bottom layer, unless the file name says `mirrored`. They use KiCad coordinates: origin at the top-left corner, X to the right, Y down (see [05 §3.1a](05-architecture.md)).
 The images were generated from the board file with `kicad-cli` and `rsvg-convert`. The net-class maps come from a small pcbnew script. To regenerate them, see [Regenerating](#regenerating).
@@ -29,13 +30,14 @@ Copper statistics (as-built):
 
 | Layer | Tracks | Track length | Filled zones |
 |---|---|---|---|
-| F.Cu | 831 | 836 mm | GND_F 1038 mm² (20 islands), BK_3V3_F 18 mm² (buck output) |
-| In1.Cu | 0 | – | GND_In1 1793 mm², **1 island** (≈ 89 % of the board) |
-| In2.Cu | 263 | 798 mm | GND_In2 1040 mm² (32 islands), PWR_VBUS_In2 139 mm² (1 island), PWR_VBUSSW_In2 151 mm² (1 island) |
-| B.Cu | 654 | 812 mm | GND_B 1006 mm² (16 islands) |
+| F.Cu | 827 | 835 mm | GND_F 1053 mm² (20 islands), BK_3V3_F 18 mm² (buck output) |
+| In1.Cu | 0 | – | GND_In1 1789 mm², **1 island** (≈ 88 % of the board) |
+| In2.Cu | 264 | 798 mm | GND_In2 1039 mm² (32 islands), PWR_VBUS_In2 139 mm² (1 island), PWR_VBUSSW_In2 151 mm² (1 island) |
+| B.Cu | 657 | 818 mm | GND_B 1002 mm² (17 islands) |
 
-There are 306 vias: 236 × 0.5/0.25 mm, 69 × 0.6/0.3 mm and 1 × 0.5/0.3 mm. 148 of them are GND stitching or return vias. All vias are through vias, tented.
-Footprints: 85 on F and 43 on B. Fitted SMD parts: 47 on F and 25 on B; the U1 module is hand-soldered on B.
+There are 311 vias: 237 × 0.5/0.25 mm, 73 × 0.6/0.3 mm and 1 × 0.5/0.3 mm. 148 of them are GND stitching or return vias. All vias are through vias, tented.
+Footprints: 120 in total, 78 on F (including the mounting holes MH1–MH4) and 42 on B; 30 of them are DNP. Fitted SMD parts: 47 on F and 25 on B; the U1 module is hand-soldered on B.
+The zone figures come from an in-memory refill with the project rules (the board file is not saved).
 
 Colour key of the net-class maps (`netmap_*.png`):
 
@@ -60,6 +62,7 @@ Contents:
 - J2, the camera FPC on the top edge, and its CSI breakout to the module pads.
 - The buck converter U4 TPS62933F. It has a tight input loop: C9 and C8 sit directly at pins 3/4, and the loop measures about 1.4 mm². The switch node stays on F only, and the BK_3V3_F output island is included.
 - The eFuse U3 with C14 at its OUT pin, CH224A U2, the USB ESD part U5, and J5 (the board-to-board connector to FRONT) on the bottom edge.
+- The IR eFuse U7 next to J5. It is not fitted (DNP), but it is fully routed, so it can be fitted later without wires.
 - The GND pour, stitched to In1.
 
 KiCad plot (copper only):
@@ -70,7 +73,7 @@ KiCad plot (copper only):
 
 ![L2 In1.Cu net-class map](img/layers/netmap_L2_In1_Cu.png)
 
-This layer holds no tracks: it is one continuous GND island covering about 89 % of the board. The only holes are via antipads and the mounting holes.
+This layer holds no tracks: it is one continuous GND island covering about 88 % of the board. The only holes are via antipads and the mounting holes.
 During the review rounds, rows of antipads near the buck and the USB via cluster were broken up so the plane stays solid under the hot loop, the switch node, the feedback network and the CSI lanes.
 
 ![L2 In1.Cu plot](img/layers/L2_In1_Cu_GND.png)
@@ -81,7 +84,7 @@ During the review rounds, rows of antipads near the buck and the USB via cluster
 
 Contents:
 - **PWR_VBUS_In2** (red): USB-C VBUS from J1 to the eFuse input. One island; a DRU rule keeps it at least 1 mm from the board edge, and the `KO_VBUS_In2` keep-out keeps tracks out of it.
-- **PWR_VBUSSW_In2** (orange): eFuse output to the buck input. One island.
+- **PWR_VBUSSW_In2** (orange): eFuse output to the buck input. One island. A small pocket of it also feeds the DNP IR eFuse U7 through two 0.6/0.3 mm vias at (35.00; 33.45) and (35.65; 33.75). The pocket joins the plane through necks as narrow as ~0.37 mm; check their current capacity before fitting the IR branch.
 - **GND_In2** fills the rest. It is the reference plane for the B.Cu RF line and the CSI B.Cu stubs:
   - `KO_RF_In2` keeps every non-GND conductor out from under the RF path.
   - `CSI_STUB_In2_NOTRACK` keeps tracks out from under the CSI stubs.
@@ -99,6 +102,7 @@ Contents:
 - The RF line U1.P2 → R34 → J4: 0.302 mm wide, with a GND via fence on both sides.
 - The decoupling cluster C20–C23 at module pins P84–P86.
 - Test pads TP1–TP7, TP16A/B and TP17–TP19, plus BOOT/RESET/USER switches, D1, D20 and the J7 UART pad row.
+- R73, the 0 Ω bypass of the IR eFuse (DNP), under U7 at (35.10; 40.90).
 - The GND pour.
 
 ![L4 B.Cu plot](img/layers/L4_B_Cu.png)

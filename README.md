@@ -30,20 +30,20 @@ OV5640 ─ MIPI CSI-2 (2 lanes) ─ ESP32-P4 ISP ─ H.264 ─ RTSP ─ esp-host
   - **MAIN** board: everything else.
   - The two boards are joined by 4 M2 standoffs plus a 2 × 10, 1.27 mm board-to-board header (J5). The camera FFC plugs into J2 on MAIN.
 
-Rev A is a **proof-of-concept prototype**. Its job is to prove the core path: USB-C PD → eFuse → buck → P4 → OV5640 → H.264 → RTSP over the C6. The target is 1080p30, running 24 hours without a reset. Blocks outside that path are either footprints that are not fitted (DNP: microSD, the IR branch, the CC tap) or deferred to rev B (the reset supervisor and the ICR, which are not on the board).
+Rev A is a **proof-of-concept prototype**. Its job is to prove the core path: USB-C PD → eFuse → buck → P4 → OV5640 → H.264 → RTSP over the C6. The target is 1080p30, running 24 hours without a reset. Blocks outside that path are either routed footprints that are not fitted (DNP: microSD, the IR branch) or not on the rev A board at all (rev B: the reset supervisor and the ICR; the CC-ADC tap and the Rd fallback stay in the schematic only).
 
-## Current status (2026-10-12)
+## Current status (2026-10-13)
 
 | Item | State |
 |---|---|
 | **MAIN rev A layout** | **Complete and reviewed.** 4 layers, JLC04101H-3313A, 45 × 45 mm. |
-| Checks (`kicad-cli`, no zone refill) | **DRC 0 errors**, **ERC 0**, **schematic ↔ board parity 0**. **12 unconnected items, all on DNP parts.** There are also 37 `track_width` warnings from a custom power-net rule; they were reviewed and accepted. |
+| Checks (`kicad-cli`, no zone refill) | **DRC 0 errors**, **0 unconnected**, **ERC 0**, **schematic ↔ board parity 0**. There are also 39 `track_width` warnings from a custom power-net rule (two of them are deliberate 0.3 mm pad-entry necks at U7); they were reviewed and accepted. |
 | Ordering | **Conditional GO.** You can order once the owner checks in [`kicad/MAIN/fab/ORDERING.md`](kicad/MAIN/fab/ORDERING.md) are done: the JLC form settings, rotations in the placement preview, the USB-C shell legs, stock reservations and accepting the U5 second source (its pinout is already checked). |
 | Open owner decisions | **Q6:** which side of J2 has the contacts, plus the FFC type. **Q17:** the mated height of J5. Neither one blocks PCB fabrication. The remaining BOM confirmations are listed in [`BOM_NOTES.md`](kicad/MAIN/fab/BOM_NOTES.md) §10. |
 | **FRONT board** | **Not started.** Waiting on gate **G6**, which needs a stable image from MAIN bring-up (G5b) and the camera's STEP model. |
 | Firmware | Not started in this repo. Rev A firmware constraints are listed in `ORDERING.md` ("Firmware rules for rev A"). |
 
-> The 12 unconnected items are DNP-only branches: CC1/CC2 and their ADC taps, and U7/R73. **Route them before you ever fit those parts.**
+> Since round 10 (2026-10-13) the board has **no unconnected items**. The DNP IR eFuse branch (U7, R73) is fully routed, so it can be fitted on a rev A board later without bodge wires. The CC option parts (the R4/R5 Rd fallback and the CC-ADC taps R35/R36, C29/C30, D21/D22) are in the schematic only; they are not on the rev A board.
 
 ## Key specs
 
@@ -125,7 +125,7 @@ You need **KiCad 10.0** or newer. The files use the KiCad 10 format (board versi
    ```
 
    Expected results:
-   - DRC: **0 errors**, 37 `track_width` warnings, **12 unconnected** (all DNP), **0 parity issues**.
+   - DRC: **0 errors**, 39 `track_width` warnings, **0 unconnected**, **0 parity issues**.
    - ERC: **0**.
    - Write the reports somewhere outside the repo, or delete them afterwards.
 
@@ -151,7 +151,7 @@ Everything you need is in [`kicad/MAIN/fab/`](kicad/MAIN/fab/). Start with **[`O
 
 1. Re-run the pre-order gate from `ORDERING.md` on the board you are about to order:
    - refill and save inside the project folder;
-   - DRC without refill gives 0 errors, 12 DNP-only unconnected, parity 0;
+   - DRC without refill gives 0 errors, 0 unconnected, parity 0;
    - ERC gives 0.
    - If the board has changed, regenerate the package (`kicad-cli pcb export gerbers --check-zones …` and `pcb export drill --excellon-separate-th …`, then BOM/CPL).
 2. Upload `gerber_jlc.zip`, `BOM_jlc.csv` and `CPL_jlc.csv` (72 rows) to JLCPCB.
@@ -169,6 +169,7 @@ Everything you need is in [`kicad/MAIN/fab/`](kicad/MAIN/fab/). Start with **[`O
 - **Round 7 (2026-10-10):** a 15-agent PCB review (7 domain experts, a sceptical re-measurer for each domain, and a gap-finder who wrote the summary) gave **NO-GO**. Findings included the buck hot loop, the RF reference plane, GND stitching, the BOM gate and the ESP_EN pull-up.
 - **Round 8 (2026-10-10/11):** **two parallel fix passes**. Each agent worked on its own fenced board region and the changes were merged by UUID (`kicad/MAIN/scripts/pcbmerge.py`, `regioncheck.py`). An independent checker re-measured every fix.
 - **Round 9 (2026-10-11):** a 16-agent final review gave **conditional GO**. No design changes were needed. The only critical item was stale zone fills, a process issue, fixed by refilling and saving inside the project folder.
+- **Round 10 (2026-10-13):** an external reviewer flagged the 12 unconnected items on DNP parts that rounds 8/9 had accepted. The IR eFuse branch (U7/R73) was routed so it can be fitted later. A routing attempt for the CC option group failed the independent check, so those 8 parts stay in the schematic only and are no longer on the board. Result: **0 unconnected**, BOM and CPL unchanged.
 
 Details are in [`docs/90-review-log.md`](docs/90-review-log.md).
 
